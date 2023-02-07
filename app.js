@@ -31,7 +31,6 @@ require("./userDetails");
 const User = mongoose.model("UserInfo");
 app.post("/register", async (req, res) => {
   const { fname, lname, email, password, userType } = req.body;
-
   const encryptedPassword = await bcrypt.hash(password, 10);
   try {
     const oldUser = await User.findOne({ email });
@@ -61,7 +60,7 @@ app.post("/login-user", async (req, res) => {
   }
   if (await bcrypt.compare(password, user.password)) {
     const token = jwt.sign({ email: user.email }, JWT_SECRET, {
-      expiresIn:  60*24*7,
+      expiresIn: 60 * 24 * 7,
     });
 
     if (res.status(201)) {
@@ -111,7 +110,7 @@ app.post("/forgot-password", async (req, res) => {
     }
     const secret = JWT_SECRET + oldUser.password;
     const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
-      expiresIn: 60*24*7,
+      expiresIn: 60 * 24 * 7,
     });
     const link = `http://localhost:5000/reset-password/${oldUser._id}/${token}`;
     var transporter = nodemailer.createTransport({
