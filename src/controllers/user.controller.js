@@ -8,6 +8,7 @@ const JWT_SECRET =
 const getAllUser = (req, res) => {
   UserModel.find({}, function (err, user) {
     if (err) {
+
       res.json({ err: err.message, status: 404 });
     }
     res.json({ status: 200, data: user });
@@ -43,7 +44,7 @@ const loginUser = async (req, res) => {
     return res.json({ error: "User not found" });
   }
   if (await bcrypt.compare(password, user.password)) {
-    const token = jwt.sign({ email: UserModel.email }, JWT_SECRET, {
+    const token = jwt.sign({ email: user.email }, JWT_SECRET, {
       expiresIn: 60 * 24 * 7,
     });
 
@@ -56,8 +57,9 @@ const loginUser = async (req, res) => {
   res.json({ status: "error", error: "InvAlid Password" });
 };
 
-const userData = async (req, res) => {
+const userData = (req, res) => {
   const { token } = req.body;
+  console.log(token);
   try {
     const user = jwt.verify(token, JWT_SECRET, (err, res) => {
       if (err) {
@@ -66,11 +68,14 @@ const userData = async (req, res) => {
       return res;
     });
     console.log(user);
+
     if (user == "token expired") {
       return res.send({ status: "error", data: "token expired" });
     }
 
-    const useremail = UserModel.email;
+    const useremail = user.email;
+    console.log(useremail);
+
     UserModel.findOne({ email: useremail })
       .then((data) => {
         res.send({ status: "ok", data: data });
