@@ -15,7 +15,7 @@ const JWT_SECRET =
   "hvdvay6ert72839289()aiyg8t87qt72393293883uhefiuh78ttq3ifi78272jbkj?[]]pou89ywe";
 
 const mongoUrl =
-  "mongodb+srv://adarsh:adarsh@cluster0.zllye.mongodb.net/?retryWrites=true&w=majority";
+  "mongodb+srv://lapthuan:lapthuan@cluster0.obtnrxv.mongodb.net/?retryWrites=true&w=majority";
 
 mongoose
   .connect(mongoUrl, {
@@ -61,7 +61,7 @@ app.post("/login-user", async (req, res) => {
   }
   if (await bcrypt.compare(password, user.password)) {
     const token = jwt.sign({ email: user.email }, JWT_SECRET, {
-      expiresIn: "10s",
+      expiresIn:  60*24*7,
     });
 
     if (res.status(201)) {
@@ -111,7 +111,7 @@ app.post("/forgot-password", async (req, res) => {
     }
     const secret = JWT_SECRET + oldUser.password;
     const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
-      expiresIn: "5m",
+      expiresIn: 60*24*7,
     });
     const link = `http://localhost:5000/reset-password/${oldUser._id}/${token}`;
     var transporter = nodemailer.createTransport({
