@@ -57,28 +57,39 @@ const loginUser = async (req, res) => {
 };
 
 const userData = async (req, res) => {
-    const { token } = req.body;
-    try {
-      const user = jwt.verify(token, JWT_SECRET, (err, res) => {
-        if (err) {
-          return "token expired";
-        }
-        return res;
-      });
-      console.log(user);
-      if (user == "token expired") {
-        return res.send({ status: "error", data: "token expired" });
+  const { token } = req.body;
+  try {
+    const user = jwt.verify(token, JWT_SECRET, (err, res) => {
+      if (err) {
+        return "token expired";
       }
-  
-      const useremail = UserModel.email;
-      UserModel.findOne({ email: useremail })
-        .then((data) => {
-          res.send({ status: "ok", data: data });
-        })
-        .catch((error) => {
-          res.send({ status: "error", data: error });
-        });
-    } catch (error) {}
+      return res;
+    });
+    console.log(user);
+    if (user == "token expired") {
+      return res.send({ status: "error", data: "token expired" });
+    }
+
+    const useremail = UserModel.email;
+    UserModel.findOne({ email: useremail })
+      .then((data) => {
+        res.send({ status: "ok", data: data });
+      })
+      .catch((error) => {
+        res.send({ status: "error", data: error });
+      });
+  } catch (error) {}
 };
 
-module.exports = { getAllUser, registers, loginUser, userData };
+const deleteUser = (req, res) => {
+  const { userid } = req.body;
+  try {
+    UserModel.deleteOne({ __id: userid }, function (err, res) {
+      console.log(err);
+    });
+    res.send({ status: "Ok", data: "Deleted" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+module.exports = { getAllUser, registers, loginUser, userData, deleteUser };
