@@ -21,13 +21,27 @@ const data_details = (req, res) => {
 };
 
 const update_dht = (req, res) => {
-  const { nhietdo, doam, email } = req.body;
-  const data = {
-    nhietdo: nhietdo,
-    doam: doam,
-  };
-  res.json({ email: email });
-  DataModel.findOneAndUpdate({ email: email }, data);
+  const { nhietdo, doam, email, connect, control } = req.body;
+
+  DataModel.findOneAndUpdate(
+    { email: req.body.email },
+    {
+      $set: {
+        nhietdo: req.body.nhietdo,
+        doam: req.body.doam,
+        connect: req.body.connect,
+        control: {
+          ct1: req.body.control.ct1,
+        },
+      },
+    },
+    { new: true },
+    (err, data) => {
+      if (err) {
+        res.send(err);
+      } else res.json(data);
+    }
+  );
 };
 
 const create_data = async (req, res) => {
