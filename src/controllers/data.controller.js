@@ -20,4 +20,33 @@ const data_details = (req, res) => {
     });
 };
 
-module.exports = { getAllData, data_details };
+const update_dht = (req, res) => {
+  const { nhietdo, doam, email } = req.body;
+  const data = {
+    nhietdo: nhietdo,
+    doam: doam,
+  };
+  res.json({ email: email });
+  DataModel.findOneAndUpdate({ email: email }, data);
+};
+
+const create_data = async (req, res) => {
+  const { email, nhietdo, doam, mhsensor, ultrasonic, connect, control } =
+    req.body;
+
+  try {
+    await DataModel.create({
+      email,
+      nhietdo,
+      doam,
+      mhsensor,
+      ultrasonic,
+      connect,
+      control,
+    });
+    res.send({ status: "Create 1 row" });
+  } catch (error) {
+    res.send({ status: "error" });
+  }
+};
+module.exports = { getAllData, data_details, update_dht, create_data };

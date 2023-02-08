@@ -3,25 +3,16 @@ const mongoose = require("mongoose");
 const DataScehma = new mongoose.Schema(
   {
     email: String,
-    dht: [
-      {
-        nhietdo: Number,
-        doam: Number,
-      },
-    ],
-    sensor: [
-      {
-        mhsensor: Number,
-        ultrasonic: Number,
-      },
-    ],
+    nhietdo: Number,
+    doam: Number,
+    mhsensor: Number,
+    ultrasonic: Number,
     connect: String,
-    control: Number,
-    dhtlog: Object,
+    control: Number
   },
   {
-    collection: "dhts",
+    collection: "data",
   }
 );
 
-module.exports = mongoose.model("dhts", DataScehma);
+module.exports = mongoose.model("data", DataScehma);
