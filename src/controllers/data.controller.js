@@ -30,9 +30,6 @@ const update_dht = (req, res) => {
         nhietdo: req.body.nhietdo,
         doam: req.body.doam,
         connect: req.body.connect,
-        control: {
-          ct1: req.body.control.ct1,
-        },
       },
     },
     { new: true },
