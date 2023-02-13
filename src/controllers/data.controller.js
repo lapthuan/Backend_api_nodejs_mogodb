@@ -29,6 +29,8 @@ const update_dht = (req, res) => {
       $set: {
         nhietdo: req.body.nhietdo,
         doam: req.body.doam,
+        mhsensor: req.body.mhsensor,
+        ultrasonic: req.body.ultrasonic,
         connect: req.body.connect,
       },
     },
