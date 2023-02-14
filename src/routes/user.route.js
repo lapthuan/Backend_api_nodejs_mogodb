@@ -7,5 +7,5 @@ route.post("/register", user_controller.registers);
 route.post("/login-user", user_controller.loginUser);
 route.post("/user-data", user_controller.userData);
 route.post("/deleteuser", user_controller.deleteUser);
-
+route.post("/changepassword",user_controller.changePassword);
 module.exports = route;

@@ -83,7 +83,7 @@ const userData = (req, res) => {
       .catch((error) => {
         res.send({ status: "error", data: error });
       });
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const deleteUser = (req, res) => {
@@ -97,4 +97,47 @@ const deleteUser = (req, res) => {
     console.log(error);
   }
 };
-module.exports = { getAllUser, registers, loginUser, userData, deleteUser };
+
+const changePassword = async (req, res) => {
+  const { newpassword, tokenold, oldpassword } = req.body;
+
+  const user = jwt.verify(tokenold, JWT_SECRET, (err, res) => {
+    if (err) {
+      return "token expired";
+    }
+    return res;
+  });
+  console.log(user);
+  const useremail = user.email;
+  console.log(useremail);
+  const oldUser = await UserModel.findOne({ email: useremail });
+
+  bcrypt.compare(oldpassword, oldUser.password, async (err, result) => {
+    if (result === true) {
+      try {
+
+        const encryptedPassword = await bcrypt.hash(newpassword, 10);
+        await UserModel.updateOne(
+          {
+            email: useremail,
+          },
+          {
+            $set: {
+              password: encryptedPassword,
+            },
+          }
+        );
+
+        res.json({ status: "verified" });
+      } catch (error) {
+        console.log(error);
+        res.json({ status: "Something Went Wrong" });
+      }
+    } else {
+      res.json({ error: "Passwords don't match" });
+    }
+  });
+
+
+};
+module.exports = { getAllUser, registers, loginUser, userData, deleteUser, changePassword };
