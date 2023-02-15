@@ -140,4 +140,44 @@ const changePassword = async (req, res) => {
 
 
 };
-module.exports = { getAllUser, registers, loginUser, userData, deleteUser, changePassword };
+const editUser = async (req, res) => {
+  const { token, lname, fname } = req.body;
+
+  const user = jwt.verify(token, JWT_SECRET, (err, res) => {
+    if (err) {
+      return "token expired";
+    }
+    return res;
+  });
+  console.log(user);
+  const useremail = user.email;
+  console.log(useremail);
+  const oldUser = await UserModel.findOne({ email: useremail });
+  try {
+    await UserModel.updateOne(
+      {
+        email: useremail,
+      },
+      {
+        $set: {
+          lname: lname,
+          fname: fname,
+        },
+      }
+    );
+    UserModel.findOne({ email: useremail })
+      .then((data) => {
+        res.send({ status: "Update Success", data: data });
+      })
+      .catch((error) => {
+        res.send({ status: "error", data: error });
+      });    
+  } catch (error) {
+    console.log(error);
+    res.json({ status: "Something Went Wrong" });
+  }
+
+
+
+};
+module.exports = { getAllUser, registers, loginUser, userData, deleteUser, changePassword, editUser };
