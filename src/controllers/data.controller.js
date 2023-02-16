@@ -56,6 +56,7 @@ const create_data = async (req, res) => {
       ultrasonic,
       connect,
       control,
+      sensor,
     });
     res.send({ status: "Create 1 row" });
   } catch (error) {
