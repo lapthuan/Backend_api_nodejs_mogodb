@@ -21,7 +21,6 @@ const data_details = (req, res) => {
 };
 
 const update_dht = (req, res) => {
-  const { nhietdo, doam, email, connect, control } = req.body;
 
   DataModel.findOneAndUpdate(
     { email: req.body.email },
@@ -63,4 +62,30 @@ const create_data = async (req, res) => {
     res.send({ status: "error" });
   }
 };
-module.exports = { getAllData, data_details, update_dht, create_data };
+
+const update_sensor = (req, res) => {
+
+  DataModel.updateOne(
+
+    { email: req.body.email, 'sensor.name': req.body.name },
+    {
+      $set: {
+        'sensor.$[elm].status': req.body.status,
+      }
+    },
+    {
+      muti: false,
+      arrayFilters: [{ 'elm.name': req.body.name }]
+    },
+    (err, data) => {
+      if (err) {
+
+        res.send({ status: "error" });
+
+      } else {
+        res.send({ status: "update success" });
+      }
+    }
+  );
+}
+module.exports = { getAllData, data_details, update_dht, create_data, update_sensor };
