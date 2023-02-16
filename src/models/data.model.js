@@ -9,7 +9,7 @@ const DataScehma = new mongoose.Schema(
     ultrasonic: Number,
     connect: String,
     control: Object,
-    sensor: Object,
+    sensor: Array,
   },
   {
     collection: "data",

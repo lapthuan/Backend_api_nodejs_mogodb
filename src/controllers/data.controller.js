@@ -71,6 +71,9 @@ const update_sensor = (req, res) => {
     {
       $set: {
         'sensor.$[elm].status': req.body.status,
+        'sensor.$[elm].timeout': req.body.timeout,
+        'sensor.$[elm].timeword': req.body.timeword,
+        'sensor.$[elm].nofi': req.body.nofi,
       }
     },
     {
