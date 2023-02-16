@@ -43,7 +43,7 @@ const update_dht = (req, res) => {
 };
 
 const create_data = async (req, res) => {
-  const { email, nhietdo, doam, mhsensor, ultrasonic, connect, control } =
+  const { email, nhietdo, doam, mhsensor, ultrasonic, connect, control,sensor } =
     req.body;
 
   try {
