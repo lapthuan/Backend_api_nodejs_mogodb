@@ -43,10 +43,10 @@ const update_dht = (req, res) => {
 };
 
 const create_data = async (req, res) => {
-  const { email, nhietdo, doam, mhsensor, ultrasonic, connect, control,limit } =
-    req.body;
+  const { email, nhietdo, doam, mhsensor, ultrasonic, connect, control,sensor } = req.body;
 
   try {
+   
     await DataModel.create({
       email,
       nhietdo,
@@ -56,8 +56,8 @@ const create_data = async (req, res) => {
       connect,
       control,
       sensor,
-      limit,
     });
+
     res.send({ status: "Create 1 row" });
   } catch (error) {
     res.send({ status: "error" });
@@ -75,6 +75,7 @@ const update_sensor = (req, res) => {
         'sensor.$[elm].timeout': req.body.timeout,
         'sensor.$[elm].timeword': req.body.timeword,
         'sensor.$[elm].nofi': req.body.nofi,
+        'sensor.$[elm].limit': req.body.limit,
       }
     },
     {
@@ -120,4 +121,4 @@ const update_controls = (req, res) => {
 }
 
 
-module.exports = { getAllData, data_details, update_dht, create_data, update_sensor,update_controls };
+module.exports = { getAllData, data_details, update_dht, create_data, update_sensor, update_controls };

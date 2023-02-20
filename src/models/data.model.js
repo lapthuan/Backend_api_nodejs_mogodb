@@ -10,7 +10,6 @@ const DataScehma = new mongoose.Schema(
     connect: String,
     control: Array,
     sensor: Array,
-    limit: Number,
   },
   {
     collection: "data",
