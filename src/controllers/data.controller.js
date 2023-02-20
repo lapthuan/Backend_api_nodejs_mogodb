@@ -1,4 +1,5 @@
 const DataModel = require("../models/data.model");
+const mongoose = require('mongoose');
 
 const getAllData = (req, res) => {
   DataModel.find({}, function (err, datas) {
@@ -43,10 +44,10 @@ const update_dht = (req, res) => {
 };
 
 const create_data = async (req, res) => {
-  const { email, nhietdo, doam, mhsensor, ultrasonic, connect, control,sensor } = req.body;
+  const { email, nhietdo, doam, mhsensor, ultrasonic, connect, control, sensor } = req.body;
 
   try {
-   
+
     await DataModel.create({
       email,
       nhietdo,
@@ -120,5 +121,66 @@ const update_controls = (req, res) => {
   );
 }
 
+const update_controlsNewData = (req, res) => {
+  const { email, name, status } = req.body;
 
-module.exports = { getAllData, data_details, update_dht, create_data, update_sensor, update_controls };
+  DataModel.findOne({ email: email }, (err, user) => {
+    if (err) {
+      console.log(err);
+    } else if (user) {
+      DataModel.findOne({
+        control: {
+          $elemMatch: {
+            name: name,
+          }
+        }
+      }, (err, data) => {
+        if (err) {
+          console.log(err);
+        } else if (data) {
+          res.send({ status: "name already exist" });
+          return;
+        } else {
+
+          const query = DataModel.updateOne({ email: email },
+            {
+              $push: {
+                control: {
+                  name: name,
+                  status: status
+                }
+              }
+            }, {
+            new: true,
+          });
+
+          if (query instanceof mongoose.Query) {
+            query.exec((err, result) => {
+              if (err) {
+                res.send({ status: "error" });
+              } else {
+                res.send({ status: "update success" });
+              }
+            });
+          } else {
+            res.send({ status: "error" });
+            return;
+          }
+        }
+      });
+    } else {
+      res.send({ status: "email not already exist" });
+      return;
+    }
+  });
+
+
+
+
+
+
+
+}
+
+
+module.exports = { getAllData, data_details, update_dht, create_data, update_sensor, update_controls, update_controlsNewData };
