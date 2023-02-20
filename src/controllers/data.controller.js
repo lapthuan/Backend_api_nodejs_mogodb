@@ -91,4 +91,32 @@ const update_sensor = (req, res) => {
     }
   );
 }
-module.exports = { getAllData, data_details, update_dht, create_data, update_sensor };
+
+const update_controls = (req, res) => {
+
+  DataModel.updateOne(
+
+    { email: req.body.email, 'sensor.name': req.body.name },
+    {
+      $set: {
+        'sensor.$[elm].status': req.body.status,
+      }
+    },
+    {
+      muti: false,
+      arrayFilters: [{ 'elm.name': req.body.name }]
+    },
+    (err, data) => {
+      if (err) {
+
+        res.send({ status: "error" });
+
+      } else {
+        res.send({ status: "update success" });
+      }
+    }
+  );
+}
+
+
+module.exports = { getAllData, data_details, update_dht, create_data, update_sensor,update_controls };
