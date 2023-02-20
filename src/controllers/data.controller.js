@@ -43,7 +43,7 @@ const update_dht = (req, res) => {
 };
 
 const create_data = async (req, res) => {
-  const { email, nhietdo, doam, mhsensor, ultrasonic, connect, control } =
+  const { email, nhietdo, doam, mhsensor, ultrasonic, connect, control,limit } =
     req.body;
 
   try {
@@ -56,6 +56,7 @@ const create_data = async (req, res) => {
       connect,
       control,
       sensor,
+      limit,
     });
     res.send({ status: "Create 1 row" });
   } catch (error) {
@@ -96,10 +97,10 @@ const update_controls = (req, res) => {
 
   DataModel.updateOne(
 
-    { email: req.body.email, 'sensor.name': req.body.name },
+    { email: req.body.email, 'control.name': req.body.name },
     {
       $set: {
-        'sensor.$[elm].status': req.body.status,
+        'control.$[elm].status': req.body.status,
       }
     },
     {
