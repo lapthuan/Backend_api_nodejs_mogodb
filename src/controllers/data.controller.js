@@ -44,7 +44,7 @@ const update_dht = (req, res) => {
 };
 
 const create_data = async (req, res) => {
-  const { email, nhietdo, doam, mhsensor, ultrasonic, connect, control, sensor } = req.body;
+  const { email, nhietdo, doam, mhsensor, ultrasonic, connect, control, sensor, dhtlog, mhlog, ultralog } = req.body;
 
   try {
 
@@ -57,6 +57,9 @@ const create_data = async (req, res) => {
       connect,
       control,
       sensor,
+      dhtlog,
+      mhlog,
+      ultralog,
     });
 
     res.send({ status: "Create 1 row" });
@@ -173,14 +176,162 @@ const update_controlsNewData = (req, res) => {
       return;
     }
   });
+}
 
+const update_dhtlog = (req, res) => {
+  const { email, nhietdo, doam,createAt } = req.body;
 
+  DataModel.findOne({ email: email }, (err, user) => {
+    if (err) {
+      console.log(err);
+    } else if (user) {
 
+      const query = DataModel.updateOne({ email: email },
+        {
+          $push: {
+            dhtlog: {
+              nhietdo: nhietdo,
+              doam: doam,
+              createAt: createAt,
+            }
+          }
+        }, {
+        new: true,
+      });
 
+      if (query instanceof mongoose.Query) {
+        query.exec((err, result) => {
+          if (err) {
+            res.send({ status: "error" });
+          } else {
+            res.send({ status: "update success" });
+          }
+        });
+      } else {
+        res.send({ status: "error" });
+        return;
+      }
+    } else {
+      res.send({ status: "email not already exist" });
+      return;
+    }
+  });
+}
 
+const update_mhlog = (req, res) => {
+  const { email,mh,createAt } = req.body;
 
+  DataModel.findOne({ email: email }, (err, user) => {
+    if (err) {
+      console.log(err);
+    } else if (user) {
 
+      const query = DataModel.updateOne({ email: email },
+        {
+          $push: {
+            mhlog: {
+              mh: mh,
+              createAt: createAt,
+            }
+          }
+        }, {
+        new: true,
+      });
+
+      if (query instanceof mongoose.Query) {
+        query.exec((err, result) => {
+          if (err) {
+            res.send({ status: "error" });
+          } else {
+            res.send({ status: "update success" });
+          }
+        });
+      } else {
+        res.send({ status: "error" });
+        return;
+      }
+    } else {
+      res.send({ status: "email not already exist" });
+      return;
+    }
+  });
 }
 
 
-module.exports = { getAllData, data_details, update_dht, create_data, update_sensor, update_controls, update_controlsNewData };
+const update_ultralog = (req, res) => {
+  const { email, ultra ,createAt } = req.body;
+
+  DataModel.findOne({ email: email }, (err, user) => {
+    if (err) {
+      console.log(err);
+    } else if (user) {
+
+      const query = DataModel.updateOne({ email: email },
+        {
+          $push: {
+            ultralog: {
+              ultra: ultra,
+              createAt: createAt,
+            }
+          }
+        }, {
+        new: true,
+      });
+
+      if (query instanceof mongoose.Query) {
+        query.exec((err, result) => {
+          if (err) {
+            res.send({ status: "error" });
+          } else {
+            res.send({ status: "update success" });
+          }
+        });
+      } else {
+        res.send({ status: "error" });
+        return;
+      }
+    } else {
+      res.send({ status: "email not already exist" });
+      return;
+    }
+  });
+}
+// const reset_esp = async (req, res) => {
+//   const { token, lname, fname } = req.body;
+
+//   const user = jwt.verify(token, JWT_SECRET, (err, res) => {
+//     if (err) {
+//       return "token expired";
+//     }
+//     return res;
+//   });
+//   console.log(user);
+//   const useremail = user.email;
+//   console.log(useremail);
+//   const oldUser = await UserModel.findOne({ email: useremail });
+//   try {
+//     await UserModel.updateOne(
+//       {
+//         email: useremail,
+//       },
+//       {
+//         $set: {
+//           lname: lname,
+//           fname: fname,
+//         },
+//       }
+//     );
+//     UserModel.findOne({ email: useremail })
+//       .then((data) => {
+//         res.send({ status: "Update Success", data: data });
+//       })
+//       .catch((error) => {
+//         res.send({ status: "error", data: error });
+//       });
+//   } catch (error) {
+//     console.log(error);
+//     res.json({ status: "Something Went Wrong" });
+//   }
+// };
+
+module.exports = { getAllData, data_details, update_dht, create_data, update_sensor, update_controls, update_controlsNewData,update_dhtlog,update_mhlog,update_ultralog };

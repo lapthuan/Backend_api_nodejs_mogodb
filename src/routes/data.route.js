@@ -9,4 +9,7 @@ route.post("/createdata", data_controller.create_data);
 route.post("/updatesensor", data_controller.update_sensor);
 route.post("/updatecontrol", data_controller.update_controls);
 route.post("/updatecontrolnewdata", data_controller.update_controlsNewData);
+route.post("/updatedhtlog", data_controller.update_dhtlog);
+route.post("/updatemhlog", data_controller.update_mhlog);
+route.post("/updateultralog", data_controller.update_ultralog);
 module.exports = route;

@@ -10,6 +10,9 @@ const DataScehma = new mongoose.Schema(
     connect: String,
     control: Array,
     sensor: Array,
+    dhtlog: Array,
+    mhlog: Array,
+    ultralog: Array,
   },
   {
     collection: "data",
