@@ -44,7 +44,7 @@ const update_dht = (req, res) => {
 };
 
 const create_data = async (req, res) => {
-  const { email, nhietdo, doam, mhsensor, ultrasonic, connect, control, sensor, dhtlog, mhlog, ultralog } = req.body;
+  const { email, nhietdo, doam, mhsensor, ultrasonic, connect, control, sensor, dhtlog, mhlog, ultralog, reset } = req.body;
 
   try {
 
@@ -55,6 +55,7 @@ const create_data = async (req, res) => {
       mhsensor,
       ultrasonic,
       connect,
+      reset,
       control,
       sensor,
       dhtlog,
@@ -179,7 +180,7 @@ const update_controlsNewData = (req, res) => {
 }
 
 const update_dhtlog = (req, res) => {
-  const { email, nhietdo, doam,createAt } = req.body;
+  const { email, nhietdo, doam, createAt } = req.body;
 
   DataModel.findOne({ email: email }, (err, user) => {
     if (err) {
@@ -219,7 +220,7 @@ const update_dhtlog = (req, res) => {
 }
 
 const update_mhlog = (req, res) => {
-  const { email,mh,createAt } = req.body;
+  const { email, mh, createAt } = req.body;
 
   DataModel.findOne({ email: email }, (err, user) => {
     if (err) {
@@ -259,7 +260,7 @@ const update_mhlog = (req, res) => {
 
 
 const update_ultralog = (req, res) => {
-  const { email, ultra ,createAt } = req.body;
+  const { email, ultra, createAt } = req.body;
 
   DataModel.findOne({ email: email }, (err, user) => {
     if (err) {
@@ -296,42 +297,40 @@ const update_ultralog = (req, res) => {
     }
   });
 }
-// const reset_esp = async (req, res) => {
-//   const { token, lname, fname } = req.body;
+const reset_esp = async (req, res) => {
+  const { email, reset } = req.body;
 
-//   const user = jwt.verify(token, JWT_SECRET, (err, res) => {
-//     if (err) {
-//       return "token expired";
-//     }
-//     return res;
-//   });
-//   console.log(user);
-//   const useremail = user.email;
-//   console.log(useremail);
-//   const oldUser = await UserModel.findOne({ email: useremail });
-//   try {
-//     await UserModel.updateOne(
-//       {
-//         email: useremail,
-//       },
-//       {
-//         $set: {
-//           lname: lname,
-//           fname: fname,
-//         },
-//       }
-//     );
-//     UserModel.findOne({ email: useremail })
-//       .then((data) => {
-//         res.send({ status: "Update Success", data: data });
-//       })
-//       .catch((error) => {
-//         res.send({ status: "error", data: error });
-//       });
-//   } catch (error) {
-//     console.log(error);
-//     res.json({ status: "Something Went Wrong" });
-//   }
-// };
+  console.log(email);
+  DataModel.findOne({ email: email }, (err, user) => {
+    if (err) {
+      console.log(err);
+    } else if (user) {
+      try {
+        DataModel.updateOne(
+          {
+            email: email,
+          },
+          {
+            $set: {
+              reset: reset,
+            },
+          },
+          (err, data) => {
+            if (err) {
+              res.send(err);
+            } else res.json(data);
+          }
+        )
+      } catch (error) {
+        console.log(error);
+        return;
+      }
+    } else {
+      res.send({ status: "email not already exist" });
+      return;
+    }
+  });
 
-module.exports = { getAllData, data_details, update_dht, create_data, update_sensor, update_controls, update_controlsNewData,update_dhtlog,update_mhlog,update_ultralog };
+};
+
+module.exports = { getAllData, data_details, update_dht, create_data, update_sensor, update_controls, update_controlsNewData, update_dhtlog, update_mhlog, update_ultralog, reset_esp };

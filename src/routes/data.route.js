@@ -12,4 +12,5 @@ route.post("/updatecontrolnewdata", data_controller.update_controlsNewData);
 route.post("/updatedhtlog", data_controller.update_dhtlog);
 route.post("/updatemhlog", data_controller.update_mhlog);
 route.post("/updateultralog", data_controller.update_ultralog);
+route.post("/reset", data_controller.reset_esp);
 module.exports = route;
