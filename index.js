@@ -4,6 +4,7 @@ const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const user = require("./src/routes/user.route");
 const data = require("./src/routes/data.route");
+const telegram = require("./src/routes/telegram.route");
 const { connect } = require("./src/connect/config.mogoose");
 const bodyParser = require("body-parser");
 
@@ -15,4 +16,5 @@ app.use(bodyParser.urlencoded({ extended: false }));
 connect;
 app.use("/datas", data);
 app.use("/users", user);
+app.use("/telegram", telegram);
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
