@@ -1,6 +1,7 @@
 const UserModel = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const dataModel = require("../models/data.model");
 
 const JWT_SECRET =
   "hvdvay6ert72839289()aiyg8t87qt72393293883uhefiuh78ttq3ifi78272jbkj?[]]pou89ywe";
@@ -87,12 +88,24 @@ const userData = (req, res) => {
 };
 
 const deleteUser = (req, res) => {
-  const { userid } = req.body;
+  const { email } = req.body;
   try {
-    UserModel.deleteOne({ __id: userid }, function (err, res) {
-      console.log(err);
-    });
-    res.send({ status: "Ok", data: "Deleted" });
+    const result2 = dataModel.deleteOne({ email: email })
+    UserModel.deleteOne({ email: email }, (err, result) => {
+      console.log(result.deletedCount);
+    }
+    );
+    dataModel.deleteOne({ email: email }, (err, result) => {
+      console.log(result.deletedCount);
+      if (result.deletedCount === 1) {
+        res.send({ status: "ok", data: "delete" });
+      } else {
+        res.send({ status: "error" });
+      }
+    }
+    );
+    
+
   } catch (error) {
     console.log(error);
   }
@@ -171,13 +184,11 @@ const editUser = async (req, res) => {
       })
       .catch((error) => {
         res.send({ status: "error", data: error });
-      });    
+      });
   } catch (error) {
     console.log(error);
     res.json({ status: "Something Went Wrong" });
   }
-
-
-
 };
+
 module.exports = { getAllUser, registers, loginUser, userData, deleteUser, changePassword, editUser };
