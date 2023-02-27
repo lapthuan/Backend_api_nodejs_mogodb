@@ -32,6 +32,7 @@ const update_dht = (req, res) => {
         mhsensor: req.body.mhsensor,
         ultrasonic: req.body.ultrasonic,
         connect: req.body.connect,
+        idtelegram: req.body.idtelegram,
       },
     },
     { new: true },
@@ -44,7 +45,7 @@ const update_dht = (req, res) => {
 };
 
 const create_data = async (req, res) => {
-  const { email, nhietdo, doam, mhsensor, ultrasonic, connect, control, sensor, dhtlog, mhlog, ultralog, reset } = req.body;
+  const { email, nhietdo, doam, mhsensor, ultrasonic, connect, control, sensor, dhtlog, mhlog, ultralog, reset,idtelegram } = req.body;
 
   try {
 
@@ -56,6 +57,7 @@ const create_data = async (req, res) => {
       ultrasonic,
       connect,
       reset,
+      idtelegram,
       control,
       sensor,
       dhtlog,
@@ -106,6 +108,7 @@ const update_controls = (req, res) => {
     { email: req.body.email, 'control.name': req.body.name },
     {
       $set: {
+        'control.$[elm].name': req.body.namenew,
         'control.$[elm].status': req.body.status,
       }
     },
