@@ -16,5 +16,5 @@ app.use(bodyParser.urlencoded({ extended: false }));
 connect;
 app.use("/datas", data);
 app.use("/users", user);
-app.use("/telegram", telegram);
+app.use("/notification", telegram);
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
