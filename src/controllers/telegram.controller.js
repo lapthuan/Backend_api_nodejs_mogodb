@@ -4,7 +4,7 @@ const DataModel = require("../models/data.model");
 const mongoose = require('mongoose');
 const dataModel = require('../models/data.model');
 
-const botToken = '6012832504:AAF-NR0oPEYkyEKvx2oO_eH2OxJIKFnjvbo';
+const botToken = '5995184582:AAEQJYwsFfiLw76exrotgPRioSyDZilnYIQ';
 var nodemailer = require("nodemailer");
 const bot = new TelegramBot(botToken, { polling: true });
 
