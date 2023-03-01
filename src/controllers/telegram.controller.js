@@ -19,7 +19,7 @@ bot.on('message', async (msg) => {
             console.log(data[0].nhietdo);
             bot.sendMessage(chatId, `Nhiệt đô hiện tại : ${data[0].nhietdo}`);
         }).catch((error) => {
-            bot.sendMessage(chatId, `Không tìm thấy ID chat \nHãy lấy ID chat bằng cách vào tìm kiếm nhập Get My ID\nNhấn Start và lấy ID nhập vào trang thong tin cá nhân`);
+            bot.sendMessage(chatId, `Không tìm thấy ID chat \nHãy lấy ID chat bằng cách vào tìm kiếm nhập Get My ID\nNhấn Start và lấy ID nhập vào trang thông tin cá nhân`);
         })
 
     } else if (text === '/doam') {
@@ -28,7 +28,7 @@ bot.on('message', async (msg) => {
             console.log(data[0].doam);
             bot.sendMessage(chatId, `Độ ẩm hiện tại : ${data[0].doam}`);
         }).catch((error) => {
-            bot.sendMessage(chatId, `Không tìm thấy ID chat \nHãy lấy ID chat bằng cách vào tìm kiếm nhập Get My ID\nNhấn Start và lấy ID nhập vào trang thong tin cá nhân`);
+            bot.sendMessage(chatId, `Không tìm thấy ID chat \nHãy lấy ID chat bằng cách vào tìm kiếm nhập Get My ID\nNhấn Start và lấy ID nhập vào trang thông tin cá nhân`);
         })
     } else if (text === '/luongnuoc') {
 
@@ -36,7 +36,7 @@ bot.on('message', async (msg) => {
             console.log(data[0].ultrasonic);
             bot.sendMessage(chatId, `Lượng nước hiện tại : ${data[0].ultrasonic}`);
         }).catch((error) => {
-            bot.sendMessage(chatId, `Không tìm thấy ID chat \nHãy lấy ID chat bằng cách vào tìm kiếm nhập Get My ID\nNhấn Start và lấy ID nhập vào trang thong tin cá nhân`);
+            bot.sendMessage(chatId, `Không tìm thấy ID chat \nHãy lấy ID chat bằng cách vào tìm kiếm nhập Get My ID\nNhấn Start và lấy ID nhập vào trang thông tin cá nhân`);
         })
     } else if (text === '/doamdat') {
 
@@ -44,7 +44,7 @@ bot.on('message', async (msg) => {
             console.log(data[0].mhsensor);
             bot.sendMessage(chatId, `Độ ẩm đất hiện tại : ${data[0].mhsensor}`);
         }).catch((error) => {
-            bot.sendMessage(chatId, `Không tìm thấy ID chat \nHãy lấy ID chat bằng cách vào tìm kiếm nhập Get My ID\nNhấn Start và lấy ID nhập vào trang thong tin cá nhân`);
+            bot.sendMessage(chatId, `Không tìm thấy ID chat \nHãy lấy ID chat bằng cách vào tìm kiếm nhập Get My ID\nNhấn Start và lấy ID nhập vào trang thông tin cá nhân`);
         })
     }
     else if (text === '/key') {
@@ -140,9 +140,9 @@ const emailMessage = (req, res) => {
 
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-            console.error(error);
+            res.send({Status: 'error'});
         } else {
-            console.log("Email sent: " + info.response);
+            res.send({Status: 'oke'});
         }
     });
 }

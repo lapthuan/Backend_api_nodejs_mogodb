@@ -5,6 +5,8 @@ const bcrypt = require("bcryptjs");
 const user = require("./src/routes/user.route");
 const data = require("./src/routes/data.route");
 const telegram = require("./src/routes/telegram.route");
+const feedback = require("./src/routes/feed.route");
+
 const { connect } = require("./src/connect/config.mogoose");
 const bodyParser = require("body-parser");
 
@@ -17,4 +19,5 @@ connect;
 app.use("/datas", data);
 app.use("/users", user);
 app.use("/notification", telegram);
+app.use("/feedback", feedback);
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
