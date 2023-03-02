@@ -104,7 +104,7 @@ const deleteUser = (req, res) => {
       }
     }
     );
-    
+
 
   } catch (error) {
     console.log(error);
@@ -191,4 +191,49 @@ const editUser = async (req, res) => {
   }
 };
 
-module.exports = { getAllUser, registers, loginUser, userData, deleteUser, changePassword, editUser };
+
+const editUserAdmin = async (req, res) => {
+  const { email, lname, fname } = req.body;
+
+  await UserModel.findOne({ email: email }).then( async (data) => {
+    await UserModel.updateOne(
+      {
+        email: email,
+      },
+      {
+        $set: {
+          lname: lname,
+          fname: fname,
+        },
+      }
+    );
+    res.send({status: "Success"});
+  }).catch((err) => {
+    res.send({status: "Email not found"});
+  });
+ 
+};
+
+const resetPassword = async (req, res) => {
+  const { email } = req.body
+
+  await UserModel.find({ email: email }).then( async (data) => {
+
+    await UserModel.updateOne({
+      email: email,
+    }, {
+      $set: {
+        password: "$2a$10$.Nz3WThQXX4zJ0pcGpyM5.cMeSwJZfws30kUxn0uaCh7jKpKXK1Km"
+      }
+    })
+
+    res.send({ status: 'Success' });
+  }).catch((error) => {
+    res.send({ status: 'Email not found' });
+  })
+
+
+};
+
+
+module.exports = { getAllUser, registers, loginUser, userData, deleteUser, changePassword, editUser,resetPassword ,editUserAdmin};
